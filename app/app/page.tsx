@@ -3,11 +3,11 @@
 import React, { useState } from "react";
 import Header from "@/components/layout/header";
 import Step1 from "./(components)/step1form";
-import Step2 from "./(components)/step2";
+import Step2 from "./(components)/step2Invoice";
 import VisualStepper from "./(components)/sections/visual-indicator";
 import { QuoteResponse } from "@/@types";
-import Step3 from "./(components)/step3";
-import End from "./(components)/sections/END";
+import Step3 from "./(components)/step3payment";
+import End from "./(components)/step4END";
 const Page = () => {
   const [step, setStep] = useState(1);
 

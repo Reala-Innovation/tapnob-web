@@ -20,6 +20,13 @@ const Step2 = ({ data, onNext, onPrev, quote, setQuote }: Props) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const toast = useToast();
+
+  //this is written by solomon not ai
+  //so we set amount, in localstorage so we can autoremmeber user amount from landing,
+  //in step 1 we call it savedAmount, we want to clear it in this step
+  if (window) {
+    localStorage.removeItem("amount");
+  }
   useEffect(() => {
     const fetchQuote = async () => {
       try {
