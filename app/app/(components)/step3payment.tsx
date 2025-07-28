@@ -5,6 +5,7 @@ import api from "@/app/api/axios";
 import { Quote, QuoteResponse } from "@/@types";
 import { Copy, Loader2, Clock } from "lucide-react";
 import QRCode from "./sections/renderQRCode";
+import { handleContactClick } from "@/lib/utils";
 
 interface Props {
   quoteData: QuoteResponse;
@@ -154,7 +155,10 @@ const Step3 = ({ quoteData, onNext, onPrev }: Props) => {
         </button>
       </div>
 
-      <p className="text-center text-blue-500 underline cursor-pointer text-sm">
+      <p
+        className="text-center text-blue-500 underline cursor-pointer text-sm"
+        onClick={handleContactClick}
+      >
         Contact Support
       </p>
     </div>

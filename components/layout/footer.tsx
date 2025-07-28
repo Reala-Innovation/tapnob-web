@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Twitter, Github, SendHorizonal as Telegram } from "lucide-react";
+import { Twitter, SendHorizonal as Telegram ,Mail} from "lucide-react";
 
 const Footer: React.FC<{ white?: boolean }> = ({ white }) => {
   const year = new Date().getFullYear();
@@ -18,7 +18,7 @@ const Footer: React.FC<{ white?: boolean }> = ({ white }) => {
           </p>
           <div className="flex gap-5 mt-2">
             <a
-              href="https://t.me/tapnob"
+              href="https://t.me/@mubitech23"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-orange-600 transition"
@@ -26,7 +26,7 @@ const Footer: React.FC<{ white?: boolean }> = ({ white }) => {
               <Telegram size={24} />
             </a>
             <a
-              href="https://twitter.com/tapnob"
+              href="https://twitter.com/tap_nob"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-orange-600 transition"
@@ -34,12 +34,12 @@ const Footer: React.FC<{ white?: boolean }> = ({ white }) => {
               <Twitter size={24} />
             </a>
             <a
-              href="https://github.com/tapnob"
+              href="mailto:gettapnob@gmail.com"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-orange-600 transition"
             >
-              <Github size={24} />
+              <Mail size={24} />
             </a>
           </div>
         </div>

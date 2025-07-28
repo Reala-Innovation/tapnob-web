@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
+import { handleContactClick } from "@/lib/utils";
 const End = () => {
   const router = useRouter();
 
@@ -34,6 +34,12 @@ const End = () => {
         >
           Return to Home
         </button>
+          <p
+                className="text-center text-blue-500 underline cursor-pointer text-sm"
+                onClick={handleContactClick}
+              >
+                Contact Support
+              </p>
       </div>
     </div>
   );
