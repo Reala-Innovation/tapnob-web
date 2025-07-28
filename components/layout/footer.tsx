@@ -50,14 +50,14 @@ const Footer: React.FC<{ white?: boolean }> = ({ white }) => {
             <h4 className="font-semibold mb-2 text-orange-600">Contact</h4>
             <p>
               Support:{" "}
-              <a href="mailto:support@tapnob.com" className="underline">
-                support@tapnob.com
+              <a href="mailto:gettapnob@gmail.com" className="underline">
+                gettapnob@gmail.com
               </a>
             </p>
             <p>
               Business:{" "}
               <a href="mailto:partners@tapnob.com" className="underline">
-                partners@tapnob.com
+                gettapnob@gmail.com
               </a>
             </p>
           </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import api from "@/app/api/axios";
 import { Quote, QuoteResponse } from "@/@types";
 import { Copy, Loader2, Clock } from "lucide-react";
@@ -13,11 +13,12 @@ interface Props {
 }
 
 const Step3 = ({ quoteData, onNext, onPrev }: Props) => {
-  const [invoiceData, setInvoiceData] = useState<Quote|null>(null);
+  const [invoiceData, setInvoiceData] = useState<Quote | null>(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState("");
-  const [expiryTimeLeft, setExpiryTimeLeft] = useState("");
+
+  const expiryRef = useRef<HTMLSpanElement>(null);
 
   const copyToClipboard = () => {
     if (invoiceData?.address) {
@@ -52,13 +53,14 @@ const Step3 = ({ quoteData, onNext, onPrev }: Props) => {
       const diff = timestamp - now;
 
       if (diff <= 0) {
-        setExpiryTimeLeft("Expired");
+        if (expiryRef.current) expiryRef.current.innerText = "Expired";
         return;
       }
 
       const minutes = Math.floor(diff / 60);
       const seconds = diff % 60;
-      setExpiryTimeLeft(`${minutes}m ${seconds}s`);
+      if (expiryRef.current)
+        expiryRef.current.innerText = `${minutes}m ${seconds}s`;
     };
 
     update();
@@ -90,7 +92,7 @@ const Step3 = ({ quoteData, onNext, onPrev }: Props) => {
 
   return (
     <div className="max-w-md mx-auto space-y-6 text-sm text-gray-800">
-      <div className="mx-auto max-w-[260px]  rounded-xl p-3 bg-white shadow-md">
+      <div className="mx-auto max-w-[260px] rounded-xl p-3 bg-white shadow-md">
         <QRCode value={invoiceData?.address as string} size={256} />
       </div>
 
@@ -128,7 +130,12 @@ const Step3 = ({ quoteData, onNext, onPrev }: Props) => {
         <p className="flex items-center gap-2">
           <strong>Expires In:</strong>
           <Clock className="w-4 h-4 text-yellow-500" />
-          <span className="text-orange-500 font-medium">{expiryTimeLeft}</span>
+          <span
+            ref={expiryRef}
+            className="text-orange-500 font-medium inline-block min-w-[60px] text-center"
+          >
+            Loading...
+          </span>
         </p>
       </div>
 
