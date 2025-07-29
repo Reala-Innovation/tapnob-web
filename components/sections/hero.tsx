@@ -48,7 +48,7 @@ const Hero = () => {
       />
 
       <div className="relative z-30 flex flex-col justify-center items-center lg:items-start h-full px-6 md:px-16 max-w-7xl mx-auto">
-        <div className="w-full flex justify-center items-center">
+        <div className="w-full flex justify-center items-center z-50 relative">
           <p className="bg-orange-600 text-white text-center w-fit text-sm rounded-full p-2">
             Currently in Beta
           </p>
