@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React from "react";
 
 import TweetCard from "./tweet-card";
@@ -47,13 +47,20 @@ const Hero = () => {
         className="absolute top-1/4 right-[140px] skew-y-[-4deg] z-10 hidden xl:block"
       />
 
-
       <div className="relative z-30 flex flex-col justify-center items-center lg:items-start h-full px-6 md:px-16 max-w-7xl mx-auto">
+        <div className="w-full flex justify-center items-center">
+          <p className="bg-orange-600 text-white text-center w-fit text-sm rounded-full p-2">
+            Currently in Beta
+          </p>
+        </div>
+
         <div className="text-center lg:text-left lg:w-1/2">
           <h1 className="text-6xl md:text-7xl lg:text-8xl font-light mb-8 leading-tight text-gray-900">
             Spend your
             <br />
-            <span className="font-normal bg-orange-600 text-white">Bitcoin</span>
+            <span className="font-normal bg-orange-600 text-white">
+              Bitcoin
+            </span>
             <br />
             Instantly
           </h1>
@@ -67,7 +74,7 @@ const Hero = () => {
           </div>
 
           <div className="lg:hidden">
-          <TweetCarousel tweets={tweets}/>
+            <TweetCarousel tweets={tweets} />
           </div>
         </div>
       </div>
