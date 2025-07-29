@@ -23,7 +23,7 @@ const Step1 = ({ data, onChange, onSetAccountName, onNext }: Props) => {
   const [banks, setBanks] = useState<Bank[]>([]);
   const toast = useToast();
   const [loadingBanks, setLoadingBanks] = useState(true);
-
+  const [amount, setAmount] = useState(data.amount || "");
   const [resolving, setResolving] = useState(false);
   const [resolvedAccountName, setResolvedAccountName] = useState("");
   const [payoutLimit, setPayoutLimit] = useState<PayoutLimit>({
@@ -38,6 +38,27 @@ const Step1 = ({ data, onChange, onSetAccountName, onNext }: Props) => {
     value: bank.bankCode,
     label: bank.bankName,
   }));
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("amount");
+      if (saved) {
+        setAmount(saved);
+        onChange({
+          target: {
+            name: "amount",
+            value: saved,
+          },
+        } as React.ChangeEvent<HTMLInputElement>);
+      }
+    }
+  }, []);
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setAmount(value);
+    onChange(e);
+    localStorage.setItem("amount", value);
+  };
 
   useEffect(() => {
     const fetchBanks = async () => {
@@ -124,12 +145,6 @@ const Step1 = ({ data, onChange, onSetAccountName, onNext }: Props) => {
     Number(data.amount) >= payoutLimit.low &&
     Number(data.amount) <= payoutLimit.high;
 
-  let savedAmount: null | number = null;
-  if (typeof window !== "undefined")
-    savedAmount = localStorage.getItem("amount") as number | null;
-  if (savedAmount) {
-    data.amount = savedAmount as unknown as string;
-  }
   const isFormValid =
     data.bank &&
     data.accountNumber.length === 10 &&
@@ -232,8 +247,8 @@ const Step1 = ({ data, onChange, onSetAccountName, onNext }: Props) => {
         <Input
           type="number"
           name="amount"
-          value={data.amount}
-          onChange={onChange}
+          value={amount}
+          onChange={handleAmountChange}
           placeholder="Enter amount"
           className="mt-1 w-full rounded-lg border bg-white/60 backdrop-blur-sm px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
         />
