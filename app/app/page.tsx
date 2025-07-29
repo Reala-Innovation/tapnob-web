@@ -78,7 +78,7 @@ const Page = () => {
               />
             )}
 
-            {step === 4 && <End />}
+            {step === 4 && <End transactionId={quote?.id || "trx-xxx-xxx"} />}
           </div>
         </div>
       </section>
