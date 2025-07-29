@@ -60,3 +60,61 @@ export interface Quote {
   barcodeUrl: string;
   beneficiaryDetails: BeneficiaryDetails;
 }
+
+interface Destination {
+  type: string;
+  bankCode: string;
+  bankName: string;
+  accountName: string;
+  accountNumber: string;
+}
+
+interface ExchangeRate {
+  btc: {
+    [key: string]: string | number;
+  };
+  rate: number;
+  currency: string;
+}
+
+interface Trip {
+  submitted: string;
+  quoteSentAt: string;
+  assetReceived: string;
+  initializedAt: string;
+  completionTime: string;
+}
+
+export interface Transaction {
+  address: string;
+  amount: string;
+  beneficiary: string;
+  beneficiaryId: string;
+  btcAmount: string;
+  callbackUrl: string | null;
+  centAmount: string;
+  centFees: string;
+  chain: string;
+  clientMetaData: Record<string, string | number | boolean | null>;
+  companyId: string;
+  createdAt: string;
+  currency: string;
+  customerId: string;
+  destination: Destination;
+  exchangeRate: ExchangeRate;
+  expiry: string;
+  fees: string;
+  fromAsset: string;
+  id: string;
+  paymentETA: string;
+  paymentReason: string;
+  quoteId: string;
+  reference: string;
+  satAmount: string;
+  settlementAmount: number;
+  source: string;
+  status: string;
+  toCurrency: string;
+  trip: Trip;
+  updatedAt: string;
+}
