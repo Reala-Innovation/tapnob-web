@@ -4,6 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { Bank, FormData } from "@/@types";
 import { useToast } from "@/app/providers/toast-provider";
+import Select, { SingleValue } from "react-select";
+type PayoutLimit = {
+  high: number;
+  low: number;
+  loading: boolean;
+};
 interface Props {
   data: FormData;
   onChange: (
@@ -12,14 +18,26 @@ interface Props {
   onSetAccountName: (name: string) => void;
   onNext: () => void;
 }
+
 const Step1 = ({ data, onChange, onSetAccountName, onNext }: Props) => {
   const [banks, setBanks] = useState<Bank[]>([]);
   const toast = useToast();
   const [loadingBanks, setLoadingBanks] = useState(true);
+
   const [resolving, setResolving] = useState(false);
   const [resolvedAccountName, setResolvedAccountName] = useState("");
+  const [payoutLimit, setPayoutLimit] = useState<PayoutLimit>({
+    high: 100000,
+    low: 1000,
+    loading: true,
+  });
   console.log(resolvedAccountName);
   const [isAccountResolved, setIsAccountResolved] = useState(false);
+
+  const options = banks.map((bank) => ({
+    value: bank.bankCode,
+    label: bank.bankName,
+  }));
 
   useEffect(() => {
     const fetchBanks = async () => {
@@ -36,7 +54,24 @@ const Step1 = ({ data, onChange, onSetAccountName, onNext }: Props) => {
         setLoadingBanks(false);
       }
     };
+    const fetchWithdrawalLimit = async () => {
+      try {
+        setPayoutLimit({ ...payoutLimit, loading: true });
+        const res = await api.get("/transactions/get-payout-limit");
+        const { lowerLimit, higherLimit } = res.data.data;
+        const low = isNaN(Number(lowerLimit)) ? 0 : Number(lowerLimit);
+        const high = isNaN(Number(higherLimit)) ? 0 : Number(higherLimit);
+        setPayoutLimit({ low, high, loading: false });
+      } catch (ex) {
+        console.log("Failed to load limit, defaulting to original values");
+        setPayoutLimit({ low: 0, high: 0, loading: false });
+      } finally {
+        setPayoutLimit({ ...payoutLimit, loading: false });
+      }
+    };
+
     fetchBanks();
+    fetchWithdrawalLimit();
   }, []);
 
   useEffect(() => {
@@ -86,7 +121,8 @@ const Step1 = ({ data, onChange, onSetAccountName, onNext }: Props) => {
   };
 
   const isAmountValid =
-    Number(data.amount) >= 1000 && Number(data.amount) <= 250000;
+    Number(data.amount) >= payoutLimit.low &&
+    Number(data.amount) <= payoutLimit.high;
 
   let savedAmount: null | number = null;
   if (typeof window !== "undefined")
@@ -135,20 +171,27 @@ const Step1 = ({ data, onChange, onSetAccountName, onNext }: Props) => {
             <Loader2 className="animate-spin w-4 h-4 text-orange-500" />
           )}
         </label>
-        <select
+        <Select
           name="bank"
-          value={data.bank}
-          onChange={onChange}
-          disabled={loadingBanks}
-          className="mt-1 w-full rounded-lg border bg-white/60 backdrop-blur-sm px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-orange-400"
-        >
-          <option value="">Select a bank</option>
-          {banks.map((bank) => (
-            <option key={bank.bankCode} value={bank.bankCode}>
-              {bank.bankName}
-            </option>
-          ))}
-        </select>
+          options={options}
+          value={options.find((option) => option.value === data.bank)}
+          onChange={(
+            selectedOption: SingleValue<{ value: string; label: string }>
+          ) => {
+            const syntheticEvent = {
+              target: {
+                name: "bank",
+                value: selectedOption?.value ?? "",
+                type: "select-one",
+              } as HTMLSelectElement,
+            } as React.ChangeEvent<HTMLSelectElement>;
+
+            onChange(syntheticEvent);
+          }}
+          isDisabled={loadingBanks}
+          className="mt-1 w-full text-base focus:border-orange-600"
+          classNamePrefix="react-select"
+        />
       </div>
 
       <div>
@@ -179,7 +222,12 @@ const Step1 = ({ data, onChange, onSetAccountName, onNext }: Props) => {
 
       <div>
         <label className="text-sm text-gray-500">
-          Amount (₦1,000 - ₦250,000)
+          {!payoutLimit.loading ? (
+            `Amount (₦${payoutLimit.low.toLocaleString()}-₦
+          ${payoutLimit.high.toLocaleString()})`
+          ) : (
+            <Loader2 className="animate-spin w-4 h-4 text-orange-500" />
+          )}
         </label>
         <Input
           type="number"

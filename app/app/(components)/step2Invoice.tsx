@@ -54,7 +54,7 @@ const Step2 = ({ data, onNext, onPrev, quote, setQuote }: Props) => {
     };
 
     fetchQuote();
-  }, [data]);
+  }, []);
 
   if (loading) {
     return (
