@@ -14,15 +14,17 @@ interface Props {
 const VisualStepper = ({ currentStep, steps }: Props) => {
   return (
     <>
-     
       <div className="flex justify-center gap-6 items-center md:hidden mb-6">
-        {steps.map((_, index) => {
+        {steps.map((step, index) => {
           const stepNumber = index + 1;
           const isCompleted = stepNumber < currentStep;
           const isActive = stepNumber === currentStep;
 
           return (
-            <div key={index} className="flex items-center gap-1">
+            <div
+              key={index}
+              className="flex flex-col items-center gap-1 min-w-[32px]"
+            >
               <motion.div
                 initial={{ scale: 0.9 }}
                 animate={{ scale: isActive ? 1.2 : 1 }}
@@ -37,16 +39,22 @@ const VisualStepper = ({ currentStep, steps }: Props) => {
                 )}
               </motion.div>
 
+             
+              {isActive && (
+                <p className="text-xs text-orange-500 font-medium text-center max-w-[64px]">
+                  {step.title}
+                </p>
+              )}
 
-              {index !== steps.length - 1 && (
-                <div className="w-6 h-px bg-gray-300" />
+
+              {index !== steps.length && (
+                <div className="w-6 h-px bg-gray-300 mt-1" />
               )}
             </div>
           );
         })}
       </div>
 
-   
       <div className="hidden md:flex flex-col gap-10 pt-4 pr-4 border-r border-gray-200 min-w-[160px]">
         {steps.map((step, index) => {
           const stepNumber = index + 1;
@@ -56,7 +64,6 @@ const VisualStepper = ({ currentStep, steps }: Props) => {
           return (
             <div key={index} className="flex items-start gap-3 relative">
               <div className="flex flex-col items-center">
-               
                 <motion.div
                   initial={{ scale: 0.9 }}
                   animate={{ scale: isActive ? 1.1 : 1 }}
@@ -71,7 +78,6 @@ const VisualStepper = ({ currentStep, steps }: Props) => {
                   )}
                 </motion.div>
 
-    
                 {index !== steps.length - 1 && (
                   <div className="w-px flex-1 bg-gray-200 mt-1 mb-1" />
                 )}
