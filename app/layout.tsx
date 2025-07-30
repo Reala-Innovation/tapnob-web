@@ -3,6 +3,7 @@ import { Manrope } from "next/font/google";
 import "./globals.css";
 import { PrimeReactProvider } from "primereact/api";
 import ToastContextProvider from "./providers/toast-provider";
+import { ReceiptProvider } from "./providers/receipt-provider";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -23,7 +24,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${manrope.className} antialiased`}>
         <PrimeReactProvider>
-          <ToastContextProvider>{children}</ToastContextProvider>
+          <ToastContextProvider>
+            <ReceiptProvider>{children}</ReceiptProvider>
+          </ToastContextProvider>
         </PrimeReactProvider>
       </body>
     </html>

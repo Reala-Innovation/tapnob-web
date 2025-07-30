@@ -9,13 +9,15 @@ import { handleContactClick } from "@/lib/utils";
 import { Transaction } from "@/@types";
 import ConfirmedMessage from "./confirmedMessage";
 import PendingMessage from "./pendingMessage";
+import { useReceipt } from "@/app/providers/receipt-provider";
 
 const End: React.FC<{ reference: string }> = ({ reference }) => {
   const router = useRouter();
   const socket = useSocket();
   const toast = useToast();
+  const { setTransaction } = useReceipt();
   const [isPayoutConfirmed, setIsPayoutConfirmed] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(180);
+  const [timeLeft, setTimeLeft] = useState(300);
 
   useEffect(() => {
     toast.showToast({
@@ -26,6 +28,7 @@ const End: React.FC<{ reference: string }> = ({ reference }) => {
     if (socket?.current) {
       const handlePayout = (data: Transaction) => {
         console.log("payment received", data);
+        setTransaction(data);
         setIsPayoutConfirmed(true);
       };
 

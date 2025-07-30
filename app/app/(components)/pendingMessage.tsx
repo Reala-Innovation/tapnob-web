@@ -25,7 +25,7 @@ const PendingMessage: React.FC<Props> = ({ reference, timeLeft }) => {
       </h1>
       <p className="text-sm text-gray-500 mt-2">
         Your payment will be confirmed in approximately{" "}
-        <span className="font-medium text-orange-600">
+        <span className="font-medium text-orange-600 text-2xl">
           {formatTime(timeLeft)}
         </span>
         . You can then print your receipt.
