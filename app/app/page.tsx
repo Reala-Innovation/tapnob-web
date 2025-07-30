@@ -5,7 +5,7 @@ import Header from "@/components/layout/header";
 import Step1 from "./(components)/step1form";
 import Step2 from "./(components)/step2Invoice";
 import VisualStepper from "./(components)/sections/visual-indicator";
-import { QuoteResponse } from "@/@types";
+import { Quote, QuoteResponse } from "@/@types";
 import Step3 from "./(components)/step3payment";
 import End from "./(components)/step4END";
 const Page = () => {
@@ -21,6 +21,7 @@ const Page = () => {
     accountName: "",
   });
   const [quote, setQuote] = useState<QuoteResponse | null>(null);
+  const [invoiceData, setInvoiceData] = useState<Quote | null>(null);
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -75,10 +76,14 @@ const Page = () => {
                 quoteData={quote as QuoteResponse}
                 onNext={goToNextStep}
                 onPrev={goToPrevStep}
+                invoice={invoiceData}
+                setInvoice={setInvoiceData}
               />
             )}
 
-            {step === 4 && <End transactionId={quote?.id || "trx-xxx-xxx"} />}
+            {step === 4 && (
+              <End reference={invoiceData?.reference || "trx-xxx-xxx"} />
+            )}
           </div>
         </div>
       </section>

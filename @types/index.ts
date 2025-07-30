@@ -118,3 +118,4 @@ export interface Transaction {
   trip: Trip;
   updatedAt: string;
 }
+

@@ -15,7 +15,7 @@ const page = () => {
             Contact Us
           </h1>
           <p className="text-lg leading-relaxed">
-            We’d love to hear from you! Whether you have questions about Tapnob,
+            We will love to hear from you! Whether you have questions about Tapnob,
             need support, or want to partner with us — our team is here to help.
           </p>
         </section>

@@ -11,10 +11,17 @@ interface Props {
   quoteData: QuoteResponse;
   onNext: () => void;
   onPrev: () => void;
+  invoice: null | Quote;
+  setInvoice: React.Dispatch<React.SetStateAction<Quote | null>>;
 }
 
-const Step3 = ({ quoteData, onNext, onPrev }: Props) => {
-  const [invoiceData, setInvoiceData] = useState<Quote | null>(null);
+const Step3 = ({
+  quoteData,
+  onNext,
+  onPrev,
+  invoice: invoiceData,
+  setInvoice: setInvoiceData,
+}: Props) => {
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState("");
