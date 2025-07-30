@@ -48,12 +48,12 @@ const Header = () => {
             <a href="/contact" className="hover:underline">
               Contact
             </a>
-            <Link href="#faq" className="hover:underline">
+            <Link href="/#faq" className="hover:underline">
               FAQs
             </Link>
             <Button
               onClick={() => router.push(isOnApp ? "/transactions" : "/app")}
-              className="bg-orange-600 text-white rounded-xl"
+              className="bg-orange-600 text-white rounded-xl cursor-pointer"
             >
               {!isOnApp ? "Get Started" : "View transactions"}
             </Button>
@@ -82,12 +82,12 @@ const Header = () => {
             <a href="/contact" className="hover:underline">
               Contact
             </a>
-            <Link href="#faq" className="hover:underline">
+            <Link href="/#faq" className="hover:underline">
               FAQs
             </Link>
             <Button
               onClick={() => router.push(isOnApp ? "/transactions" : "/app")}
-              className="bg-orange-600 text-white rounded-xl"
+              className="bg-orange-600 text-white rounded-xl cursor-pointer"
             >
               {!isOnApp ? "Get Started" : "View transactions"}
             </Button>

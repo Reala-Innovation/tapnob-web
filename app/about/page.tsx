@@ -10,10 +10,10 @@ const page = () => {
       <main className="max-w-4xl mx-auto px-4 py-12">
         <BackButton />
         <section className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-bold text-orange-600 mb-4">
+          <h1 className="text-2xl md:text-4xl font-bold text-orange-600 mb-4">
             About Us
           </h1>
-          <p className="text-lg leading-relaxed">
+          <p className=" leading-relaxed">
             At <span className="font-semibold text-orange-600">Tapnob</span>, we
             simplify spending Bitcoin across Africa. Our platform bridges the
             gap between Bitcoin and instant bank transfers, enabling you to
@@ -24,10 +24,10 @@ const page = () => {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-orange-600 mb-2">
+          <h2 className="text-xl font-semibold text-orange-600 mb-2">
             Our Mission
           </h2>
-          <p className="text-lg leading-relaxed">
+          <p className=" leading-relaxed">
             Our mission is to make Bitcoin adoption easy, practical, and
             accessible for everyone, one seamless bank transaction at a time. We
             believe Bitcoin is the future of money, and we’re building the tools
@@ -36,10 +36,10 @@ const page = () => {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-orange-600 mb-2">
+          <h2 className="text-xl font-semibold text-orange-600 mb-2">
             Who We Are
           </h2>
-          <p className="text-lg leading-relaxed">
+          <p className=" leading-relaxed">
             <span className="font-semibold">Tapnob</span> is a product of Reala
             Innovative Solutions Ltd, a forward-thinking technology company
             focused on building tools for the modern African economy. We combine
@@ -49,7 +49,7 @@ const page = () => {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-orange-600 mb-2">
+          <h2 className="text-xl font-semibold text-orange-600 mb-2">
             What We Offer
           </h2>
           <ul className="list-disc list-inside text-lg space-y-2">
@@ -73,12 +73,12 @@ const page = () => {
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold text-orange-600 mb-2">
+          <h2 className="text-xl font-semibold text-orange-600 mb-2">
             Why Tapnob?
           </h2>
-          <p className="text-lg leading-relaxed">
-            We are more than just a service — we’re creating a bridge to the
-            future of digital money in Africa. Whether you’re new to Bitcoin or
+          <p className=" leading-relaxed">
+            We are more than just a service — we are creating a bridge to the
+            future of digital money in Africa. Whether you are new to Bitcoin or
             an experienced user, Tapnob provides a simple and reliable platform
             to transact with confidence.
           </p>
