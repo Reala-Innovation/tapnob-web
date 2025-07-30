@@ -83,25 +83,48 @@ const Page = () => {
           <TableCaption>A list of recent off-ramp transactions.</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-orange-600">Reference</TableHead>
-              <TableHead className="text-orange-600">Amount in ($)</TableHead>
-              <TableHead className="text-orange-600">Amount in (₦)</TableHead>
-              <TableHead className="text-orange-600">Currency</TableHead>
-              <TableHead className="text-orange-600">Status</TableHead>
-              <TableHead className="text-orange-600">Date</TableHead>
-              <TableHead className="text-orange-600">Actions</TableHead>
+              <TableHead className="text-orange-600 hidden md:table-cell">
+                Reference
+              </TableHead>
+              <TableHead className="text-orange-600 md:hidden">
+                Status
+              </TableHead>
+              <TableHead className="text-orange-600">Amount (₦)</TableHead>
+              <TableHead className="text-orange-600">Amount ($)</TableHead>
+              <TableHead className="text-orange-600 hidden md:table-cell">
+                Currency
+              </TableHead>
+              <TableHead className="text-orange-600 hidden md:table-cell">
+                Status
+              </TableHead>
+              <TableHead className="text-orange-600 hidden md:table-cell">
+                Date
+              </TableHead>
+              <TableHead className="text-orange-600 hidden md:table-cell">
+                Actions
+              </TableHead>
             </TableRow>
           </TableHeader>
+
           <TableBody>
             {filteredTransactions.map((tx) => (
               <TableRow key={tx.id}>
-                <TableCell>{tx.reference}</TableCell>
-                <TableCell>${tx.amount}</TableCell>
-                <TableCell>{tx.settlementAmount}</TableCell>
-                <TableCell>{tx.toCurrency.toUpperCase()}</TableCell>
-                <TableCell>{tx.status}</TableCell>
-                <TableCell>{new Date(tx.createdAt).toLocaleString()}</TableCell>
-                <TableCell>
+                <TableCell className="hidden md:table-cell">
+                  {tx.reference}
+                </TableCell>
+                <TableCell className="md:hidden">{tx.status}</TableCell>
+                <TableCell>₦{tx.settlementAmount.toLocaleString()}</TableCell>
+                <TableCell>${tx.amount.toLocaleString()}</TableCell>
+                <TableCell className="hidden md:table-cell">
+                  {tx.toCurrency.toUpperCase()}
+                </TableCell>
+                <TableCell className="hidden md:table-cell">
+                  {tx.status}
+                </TableCell>
+                <TableCell className="hidden md:table-cell">
+                  {new Date(tx.createdAt).toLocaleString()}
+                </TableCell>
+                <TableCell className="hidden md:table-cell">
                   <button
                     onClick={() => setSelectedTransaction(tx)}
                     className="text-orange-600 hover:underline text-sm"
