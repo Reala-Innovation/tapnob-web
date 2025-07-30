@@ -11,7 +11,7 @@ const FaqSection = () => {
   };
 
   return (
-    <div className="w-full bg-white py-16">
+    <div  id="faq" className="w-full bg-white py-16">
       <section className="max-w-3xl w-full mx-auto px-6 bg-white rounded-xl">
         <h2 className="text-3xl font-bold text-orange-600 mb-8 text-center">
           Frequently Asked Questions

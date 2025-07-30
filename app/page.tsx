@@ -8,7 +8,7 @@ import Footer from "@/components/layout/footer";
 
 export default function Home() {
   return (
-    <div className="bg-[#efefee]">
+    <div className="bg-[#efefee] scroll-smooth">
       <Header />
       <Hero />
       <TapnobAdvantage />

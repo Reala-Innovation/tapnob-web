@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 import { Menu, X, Smartphone } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-
+import Link from "next/link";
 const Header = () => {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -17,12 +17,12 @@ const Header = () => {
 
   return (
     <>
-    <div className="w-full">
-      <div className="inline-flex absolute top-10 left-[40%] items-center gap-1 px-2 py-1 bg-orange-100 text-orange-600 text-xs font-medium rounded-full border border-orange-200 mx-auto w-fit">
-        <Smartphone className="w-3 h-3" />
-        <span>in Beta</span>
+      <div className="w-full">
+        <div className="inline-flex absolute top-10 left-[40%] items-center gap-1 px-2 py-1 bg-orange-100 text-orange-600 text-xs font-medium rounded-full border border-orange-200 mx-auto w-fit">
+          <Smartphone className="w-3 h-3" />
+          <span>in Beta</span>
+        </div>
       </div>
-</div>
       <header className="sticky top-5 z-50 mx-auto w-[95%] max-w-6xl md:rounded-full bg-transparent md:bg-white/80 md:shadow-lg md:backdrop-blur-md border-none md:border border-white/30 px-4">
         <div className="flex items-center justify-between py-3">
           <div
@@ -39,18 +39,18 @@ const Header = () => {
           </div>
 
           <nav className="hidden md:flex gap-6 text-sm font-medium items-center">
-            <a href="#about" className="hover:underline">
+            <Link href="/about" className="hover:underline">
               About
+            </Link>
+            <a href="/services" className="hover:underline">
+              Services
             </a>
-            <a href="#features" className="hover:underline">
-              Service
-            </a>
-            <a href="#contact" className="hover:underline">
+            <a href="/contact" className="hover:underline">
               Contact
             </a>
-            <a href="#faqs" className="hover:underline">
+            <Link href="#faq" className="hover:underline">
               FAQs
-            </a>
+            </Link>
             <Button
               onClick={() => router.push(isOnApp ? "/transactions" : "/app")}
               className="bg-orange-600 text-white rounded-xl"
@@ -73,18 +73,18 @@ const Header = () => {
 
         {menuOpen && (
           <div className="md:hidden bg-[#efefee] flex mb-10 flex-col gap-4 px-4 pb-4 text-sm font-medium">
-            <a href="#about" className="hover:underline">
+            <Link href="/about" className="hover:underline">
               About
+            </Link>
+            <a href="/services" className="hover:underline">
+              Services
             </a>
-            <a href="#features" className="hover:underline">
-              Service
-            </a>
-            <a href="#contact" className="hover:underline">
+            <a href="/contact" className="hover:underline">
               Contact
             </a>
-            <a href="#faqs" className="hover:underline">
+            <Link href="#faq" className="hover:underline">
               FAQs
-            </a>
+            </Link>
             <Button
               onClick={() => router.push(isOnApp ? "/transactions" : "/app")}
               className="bg-orange-600 text-white rounded-xl"
