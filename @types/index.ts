@@ -118,4 +118,62 @@ export interface Transaction {
   trip: Trip;
   updatedAt: string;
 }
+export interface PayoutConfirmation {
+  id: string;
+  address: string;
+  amount: string;
+  bankSessionId: string;
+  beneficiaryId: string;
+  btcAmount: string;
+  callbackUrl: string | null;
+  centAmount: string;
+  centFees: string;
+  chain: string;
+  clientMetaData: Record<string, unknown>;
+  companyId: string;
+  createdAt: string;
+  customerId: string;
+  exchangeRate: {
+    btc?: Record<string, unknown>;
+    rate: number;
+    currency: string;
+  };
+  expiry: string;
+  fees: string;
+  fromAsset: string;
+  paymentETA: string;
+  paymentReason: string;
+  quoteId: string;
+  reference: string;
+  satAmount: string;
+  settlementAmount: number;
+  source: string;
+  status: string;
+  toCurrency: string;
+  updatedAt: string;
 
+  beneficiary: {
+    id: string;
+    status: string;
+    country: string;
+    currency: string;
+    createdAt: string;
+    destination: {
+      accountName: string;
+      accountNumber: string;
+      bankCode: string;
+      bankName: string;
+      type: string;
+    };
+    [key: string]: unknown; 
+  };
+
+  trip: {
+    submitted: string;
+    quoteSentAt: string;
+    assetReceived: string;
+    initializedAt: string;
+    completionTime: string;
+    [key: string]: unknown;
+  };
+}

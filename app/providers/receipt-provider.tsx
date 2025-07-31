@@ -1,11 +1,11 @@
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
-import { Transaction } from "@/@types";
+import { PayoutConfirmation, Transaction } from "@/@types";
 
 interface ReceiptContextType {
-  transaction: Transaction | null;
-  setTransaction: (tx: Transaction) => void;
+  transaction: PayoutConfirmation| null;
+  setTransaction: (tx: PayoutConfirmation) => void;
 }
 
 const ReceiptContext = createContext<ReceiptContextType | undefined>(undefined);
@@ -15,7 +15,7 @@ export const ReceiptProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [transaction, setTransaction] = useState<Transaction | null>(null);
+  const [transaction, setTransaction] = useState<PayoutConfirmation | null>(null);
 
   return (
     <ReceiptContext.Provider value={{ transaction, setTransaction }}>

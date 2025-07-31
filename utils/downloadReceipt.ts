@@ -1,12 +1,12 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { Transaction } from "@/@types";
+import { PayoutConfirmation } from "@/@types";
 
-export const downloadReceipt = (transaction: Transaction) => {
+export const downloadReceipt = (transaction: PayoutConfirmation) => {
   const doc = new jsPDF();
-  console.log(transaction);
+
   doc.setFontSize(18);
-  doc.setTextColor(34, 139, 34); // green
+  doc.setTextColor(34, 139, 34);
   doc.text("Payment Receipt", 14, 20);
 
   doc.setFontSize(11);
@@ -22,13 +22,19 @@ export const downloadReceipt = (transaction: Transaction) => {
       ["Status", transaction.status],
       [
         "Amount (NGN)",
-        `₦${Number(transaction.settlementAmount).toLocaleString()}`,
+        `${Number(transaction.settlementAmount).toLocaleString()}`,
       ],
       ["Amount (BTC)", `${transaction.btcAmount} BTC`],
-      ["Exchange Rate", `₦${transaction.exchangeRate.rate}`],
-      // ["Bank", `${transaction.destination.bankName}`],
-      ["Account Name", transaction.destination.accountName],
-      ["Account Number", transaction.destination.accountNumber],
+      ["Exchange Rate", `${transaction.exchangeRate.rate}`],
+      ["SAT Amount", `${transaction.satAmount}`],
+      [
+        "Account Name",
+        transaction.beneficiary?.destination?.["accountName"] || "N/A",
+      ],
+      [
+        "Account Number",
+        transaction.beneficiary?.destination?.["accountNumber"] || "N/A",
+      ],
       ["Payment ETA", transaction.paymentETA],
       ["Reason", transaction.paymentReason],
     ],
@@ -42,5 +48,5 @@ export const downloadReceipt = (transaction: Transaction) => {
     doc.internal.pageSize.height - 20
   );
 
-  doc.save(`receipt_${transaction.reference}.pdf`);
+  doc.save(`tapnob_receipt_${transaction.reference}.pdf`);
 };

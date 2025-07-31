@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useSocket } from "@/app/hooks/useSocket";
 import { useToast } from "@/app/providers/toast-provider";
 import { handleContactClick } from "@/lib/utils";
-import { Transaction } from "@/@types";
+import { PayoutConfirmation, Transaction } from "@/@types";
 import ConfirmedMessage from "./confirmedMessage";
 import PendingMessage from "./pendingMessage";
 import { useReceipt } from "@/app/providers/receipt-provider";
@@ -26,7 +26,7 @@ const End: React.FC<{ reference: string }> = ({ reference }) => {
     });
 
     if (socket?.current) {
-      const handlePayout = (data: Transaction) => {
+      const handlePayout = (data: PayoutConfirmation) => {
         console.log("payment received", data);
         setTransaction(data);
         setIsPayoutConfirmed(true);
