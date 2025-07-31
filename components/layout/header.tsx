@@ -48,7 +48,7 @@ const Header = () => {
             <a href="/contact" className="hover:underline">
               Contact
             </a>
-            <Link href="/#faq" className="hover:underline">
+            <Link href="/faq" className="hover:underline">
               FAQs
             </Link>
             <Button
@@ -82,7 +82,7 @@ const Header = () => {
             <a href="/contact" className="hover:underline">
               Contact
             </a>
-            <Link href="/#faq" className="hover:underline">
+            <Link href="/faq" className="hover:underline">
               FAQs
             </Link>
             <Button
