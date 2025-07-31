@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: "Tapnob - Send Bitcoin and Instantly Cash Out to Bank",
   description:
     "Tapnob offers off-ramp and on-ramp services across Bitcoin and USDT.",
+  icons: {
+    icon: "/tapnob-logo.svg", 
+  },
 };
 
 export default function RootLayout({
