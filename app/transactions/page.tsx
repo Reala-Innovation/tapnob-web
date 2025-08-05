@@ -23,9 +23,21 @@ const Page = () => {
   const [allTransactions, setAllTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const toast = useToast();
+  const [isMobile, setIsMobile] = useState(false);
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transaction | null>(null);
+  const toast = useToast();
+
+  // Safe screen size detection
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    handleResize(); // Initial check on mount
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -108,7 +120,13 @@ const Page = () => {
 
           <TableBody>
             {filteredTransactions.map((tx) => (
-              <TableRow key={tx.id}>
+              <TableRow
+                key={tx.id}
+                onClick={() => {
+                  if (isMobile) setSelectedTransaction(tx);
+                }}
+                className="cursor-pointer hover:bg-gray-50"
+              >
                 <TableCell className="hidden md:table-cell">
                   {tx.reference}
                 </TableCell>
@@ -126,7 +144,10 @@ const Page = () => {
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
                   <button
-                    onClick={() => setSelectedTransaction(tx)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedTransaction(tx);
+                    }}
                     className="text-orange-600 hover:underline text-sm"
                   >
                     View Details
@@ -140,7 +161,7 @@ const Page = () => {
 
       {/* Modal */}
       {selectedTransaction && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6 relative border-t-4 border-orange-600">
             <button
               onClick={() => setSelectedTransaction(null)}
