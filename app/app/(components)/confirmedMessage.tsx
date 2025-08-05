@@ -39,7 +39,7 @@ const ConfirmedMessage = () => {
         <button
           onClick={() => router.push("/app")}
           className="mt-4 w-full py-3 rounded-xl bg-orange-500 text-white font-medium hover:bg-orange-400 transition"
-        >
+        > 
           New Transaction
         </button>
       </div>
