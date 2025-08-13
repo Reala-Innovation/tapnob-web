@@ -11,8 +11,14 @@ import PendingMessage from "./pendingMessage";
 import FailedMessage from "./failedMessage";
 import { useReceipt } from "@/app/providers/receipt-provider";
 import api from "@/app/api/axios";
+import ExpiredMessage from "./expiredMessage";
 
-type TransactionStatus = "pending" | "confirmed" | "failed";
+type TransactionStatus =
+  | "pending"
+  | "confirmed"
+  | "failed"
+  | "expired"
+  | "processing";
 
 const End: React.FC<{ reference: string }> = ({ reference }) => {
   const router = useRouter();
@@ -22,8 +28,7 @@ const End: React.FC<{ reference: string }> = ({ reference }) => {
 
   const [transactionStatus, setTransactionStatus] =
     useState<TransactionStatus>("pending");
-  const [timeLeft, setTimeLeft] = useState(10);
-
+  const [timeLeft, setTimeLeft] = useState(300);
   useEffect(() => {
     toast.showToast({
       severity: "info",
@@ -32,13 +37,13 @@ const End: React.FC<{ reference: string }> = ({ reference }) => {
 
     if (socket?.current) {
       const handlePayout = (data: PayoutConfirmation) => {
-        console.log("payment received via socket", data);
+        console.log("payment received via socket");
         setTransaction(data);
         setTransactionStatus("confirmed");
       };
 
-      const handlePayoutFailed = (data: any) => {
-        console.log("payment failed via socket", data);
+      const handlePayoutFailed = (data: PayoutConfirmation) => {
+        console.log("payment failed via socket");
         setTransactionStatus("failed");
       };
 
@@ -64,24 +69,48 @@ const End: React.FC<{ reference: string }> = ({ reference }) => {
   useEffect(() => {
     if (timeLeft === 0 && transactionStatus === "pending") {
       console.log("Timer ended — checking transaction via API...");
+
       api
         .get(`/transactions/reference/${reference}`)
         .then((res) => {
-          console.log(res.data)
           if (res.status !== 200)
             throw new Error("Failed to fetch transaction");
-          if (res.data?.status === "success") {
-            console.log("Payment received via API", res.data);
-            setTransaction(res.data);
-            setTransactionStatus("confirmed");
-          } else if (res.data?.status === "failed") {
-            console.log("Payment failed via API", res.data);
-            setTransactionStatus("failed");
-          } else {
-            toast.showToast({
-              severity: "warn",
-              detail: "Payment not confirmed yet. Please contact support.",
-            });
+
+          const status = res.data.data?.status;
+
+          switch (status) {
+            case "success":
+              setTransaction(res.data.data);
+              setTransactionStatus("confirmed");
+              break;
+
+            case "failed":
+              setTransactionStatus("failed");
+              break;
+
+            case "expired":
+              setTransactionStatus("expired");
+              toast.showToast({
+                severity: "warn",
+                detail: "This payment link has expired.",
+              });
+              break;
+
+            case "processing":
+              setTransactionStatus("processing");
+              toast.showToast({
+                severity: "info",
+                detail:
+                  "Payment is still processing. Please check again later.",
+              });
+              break;
+
+            default:
+              toast.showToast({
+                severity: "warn",
+                detail: "Payment not confirmed yet. Please contact support.",
+              });
+              break;
           }
         })
         .catch((err) => {
@@ -99,7 +128,7 @@ const End: React.FC<{ reference: string }> = ({ reference }) => {
       case "confirmed":
         return "/success.svg";
       case "failed":
-        return "/error.svg"; 
+        return "/error.svg";
       default:
         return "/success.svg";
     }
@@ -111,6 +140,8 @@ const End: React.FC<{ reference: string }> = ({ reference }) => {
         return <ConfirmedMessage />;
       case "failed":
         return <FailedMessage reference={reference} />;
+      case "expired":
+        return <ExpiredMessage reference={reference} />;
       default:
         return <PendingMessage reference={reference} timeLeft={timeLeft} />;
     }

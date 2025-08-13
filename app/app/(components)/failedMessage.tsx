@@ -27,7 +27,7 @@ const FailedMessage: React.FC<{ reference: string }> = ({ reference }) => {
       <div className="flex flex-col space-y-3 mt-6">
         <button
           onClick={handleRetry}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+          className="bg-orange-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
         >
           Try Again
         </button>

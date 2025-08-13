@@ -25,7 +25,6 @@ const AmountForm: React.FC = () => {
 
       return;
     }
-    console.log("Amount entered (NGN):", rawAmount);
     if (typeof window !== "undefined") {
       localStorage.setItem("amount", rawAmount);
     }

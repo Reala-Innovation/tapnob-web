@@ -10,6 +10,8 @@ const ConfirmedMessage = () => {
   const { transaction } = useReceipt();
 
   const handleDownload = () => {
+
+    console.log(transaction?.exchangeRate?.rate)
     if (transaction) {
       downloadReceipt(transaction);
     }
@@ -23,23 +25,18 @@ const ConfirmedMessage = () => {
       <p className="text-gray-600 text-sm">
         Your payout was successful. You can now print your receipt.
       </p>
-      <div className="mt-4 flex gap-2">
-        {/* <button
-          onClick={() => router.push("/receipt")}
-          className="flex-1 py-3 rounded-xl bg-green-600 text-white font-medium hover:bg-green-500 transition"
-        >
-          View Receipt
-        </button> */}
+      <div className="mt-4 flex flex-col gap-2">
         <button
           onClick={handleDownload}
-          className="flex-1 py-3 rounded-xl border border-green-600 text-green-600 font-medium hover:bg-green-50 transition"
+          className="w-full py-3 rounded-xl border border-green-600 text-green-600 font-medium hover:bg-green-50 transition"
         >
           Download PDF
         </button>
+
         <button
           onClick={() => router.push("/app")}
-          className="mt-4 w-full py-3 rounded-xl bg-orange-500 text-white font-medium hover:bg-orange-400 transition"
-        > 
+          className="w-full py-3 rounded-xl bg-orange-500 text-white font-medium hover:bg-orange-400 transition"
+        >
           New Transaction
         </button>
       </div>
