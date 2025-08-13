@@ -31,7 +31,7 @@ const Step1 = ({ data, onChange, onSetAccountName, onNext }: Props) => {
     low: 1000,
     loading: true,
   });
-  console.log(resolvedAccountName);
+  console.log('Hi there',resolvedAccountName);
   const [isAccountResolved, setIsAccountResolved] = useState(false);
 
   const options = banks.map((bank) => ({

@@ -1,23 +1,28 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useSocket } from "@/app/hooks/useSocket";
 import { useToast } from "@/app/providers/toast-provider";
 import { handleContactClick } from "@/lib/utils";
-import { PayoutConfirmation, Transaction } from "@/@types";
+import { PayoutConfirmation } from "@/@types";
 import ConfirmedMessage from "./confirmedMessage";
 import PendingMessage from "./pendingMessage";
+import FailedMessage from "./failedMessage";
 import { useReceipt } from "@/app/providers/receipt-provider";
+import api from "@/app/api/axios";
+
+type TransactionStatus = "pending" | "confirmed" | "failed";
 
 const End: React.FC<{ reference: string }> = ({ reference }) => {
   const router = useRouter();
   const socket = useSocket();
   const toast = useToast();
   const { setTransaction } = useReceipt();
-  const [isPayoutConfirmed, setIsPayoutConfirmed] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(300);
+
+  const [transactionStatus, setTransactionStatus] =
+    useState<TransactionStatus>("pending");
+  const [timeLeft, setTimeLeft] = useState(10);
 
   useEffect(() => {
     toast.showToast({
@@ -27,39 +32,103 @@ const End: React.FC<{ reference: string }> = ({ reference }) => {
 
     if (socket?.current) {
       const handlePayout = (data: PayoutConfirmation) => {
-        console.log("payment received", data);
+        console.log("payment received via socket", data);
         setTransaction(data);
-        setIsPayoutConfirmed(true);
+        setTransactionStatus("confirmed");
+      };
+
+      const handlePayoutFailed = (data: any) => {
+        console.log("payment failed via socket", data);
+        setTransactionStatus("failed");
       };
 
       socket.current.on("payout_confirmation", handlePayout);
+      socket.current.on("payout_failed", handlePayoutFailed);
+
       return () => {
         socket.current?.off("payout_confirmation", handlePayout);
+        socket.current?.off("payout_failed", handlePayoutFailed);
       };
     }
   }, [socket]);
 
   useEffect(() => {
-    if (!isPayoutConfirmed && timeLeft > 0) {
+    if (transactionStatus === "pending" && timeLeft > 0) {
       const timer = setInterval(() => {
         setTimeLeft((prev) => prev - 1);
       }, 1000);
       return () => clearInterval(timer);
     }
-  }, [isPayoutConfirmed, timeLeft]);
+  }, [transactionStatus, timeLeft]);
+
+  useEffect(() => {
+    if (timeLeft === 0 && transactionStatus === "pending") {
+      console.log("Timer ended — checking transaction via API...");
+      api
+        .get(`/transactions/reference/${reference}`)
+        .then((res) => {
+          console.log(res.data)
+          if (res.status !== 200)
+            throw new Error("Failed to fetch transaction");
+          if (res.data?.status === "success") {
+            console.log("Payment received via API", res.data);
+            setTransaction(res.data);
+            setTransactionStatus("confirmed");
+          } else if (res.data?.status === "failed") {
+            console.log("Payment failed via API", res.data);
+            setTransactionStatus("failed");
+          } else {
+            toast.showToast({
+              severity: "warn",
+              detail: "Payment not confirmed yet. Please contact support.",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          toast.showToast({
+            severity: "error",
+            detail: "Error checking payment status.",
+          });
+        });
+    }
+  }, [timeLeft, transactionStatus, reference, setTransaction, toast]);
+
+  const getImageSrc = () => {
+    switch (transactionStatus) {
+      case "confirmed":
+        return "/success.svg";
+      case "failed":
+        return "/error.svg"; 
+      default:
+        return "/success.svg";
+    }
+  };
+
+  const renderContent = () => {
+    switch (transactionStatus) {
+      case "confirmed":
+        return <ConfirmedMessage />;
+      case "failed":
+        return <FailedMessage reference={reference} />;
+      default:
+        return <PendingMessage reference={reference} timeLeft={timeLeft} />;
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
       <div className="max-w-md text-center space-y-6">
         <div className="w-full flex justify-center">
-          <Image src="/success.svg" alt="Success" width={200} height={200} />
+          <Image
+            src={getImageSrc()}
+            alt={transactionStatus === "failed" ? "Error" : "Success"}
+            width={200}
+            height={200}
+          />
         </div>
 
-        {isPayoutConfirmed ? (
-          <ConfirmedMessage />
-        ) : (
-          <PendingMessage reference={reference} timeLeft={timeLeft} />
-        )}
+        {renderContent()}
 
         <p
           className="text-center text-blue-500 underline cursor-pointer text-sm"
